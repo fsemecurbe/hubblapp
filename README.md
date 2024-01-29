@@ -3,8 +3,8 @@
 
 ## Principales requêtes
 
-select sum(Ind) as 'pop' from carreaux, (SELECT ST_BUFFER(ST_Transform(ST_Point(48.853 , 2.35),'EPSG:4326', 'EPSG:2154'),1000) AS hubblo) 
-where st_intersects(ST_GEOMFROMWKB(carreaux.geometry), hubblo) group by all;
+  select sum(Ind) as 'pop' from carreaux, (SELECT ST_BUFFER(ST_Transform(ST_Point(48.853 , 2.35),'EPSG:4326', 'EPSG:2154'),1000) AS hubblo) 
+  where st_intersects(ST_GEOMFROMWKB(carreaux.geometry), hubblo) group by all;
 
 
 
