@@ -4,6 +4,14 @@
 ## Principales requêtes
 
 ```
+LOAD httpfs ;INSTALL spatial; LOAD spatial;
+
+CREATE OR REPLACE VIEW carreaux
+AS SELECT * FROM read_parquet("https://minio.lab.sspcloud.fr/h529p3/data/Filosofi2017_carreaux_200m_met.parquet"); 
+```
+
+
+```
 select sum(Ind) as 'pop' from carreaux, (SELECT ST_BUFFER(ST_Transform(ST_Point(48.853 , 2.35),'EPSG:4326', 'EPSG:2154'),1000) AS hubblo) 
 where st_intersects(ST_GEOMFROMWKB(carreaux.geometry), hubblo) group by all;
 ```
