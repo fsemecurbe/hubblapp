@@ -1,20 +1,36 @@
 ---
 theme: dashboard
-title: Premier test hubblo
+title: Description de mon Territoire
 toc: false
 ---
 
-# Premier test de Hubblo
+# Description de mon Territoire
 
 <!-- Load and transform the data -->
 
+<div class="grid grid-cols-4">
+  <div class="card">
+    <h2>Ménages</h2>
+    <span class="big">${hubblo[0].Men}</span>
+  </div>
+  <div class="card">
+    <h2>Individus</h2>
+    <span class="big">${hubblo[0].Ind}</span>
+  </div>
+    <div class="card">
+    <h2>Taille des Ménages</h2>
+    <span class="big">${Math.round(hubblo[0].Ind/hubblo[0].Men * 100) / 100}</span>
+  </div>
+     <div class="card">
+    <h2>% des Ménages pauvres</h2>
+    <span class="big">${Math.round(hubblo[0].Men_pauv/hubblo[0].Men * 100) }</span>
+  </div>
+</div>
 
 
-<div class="grid grid-cols-2">
-  <div class="card" id="map">
-    <h2>Lorem ipsum</h2>
-    <p>Id ornare arcu odio ut sem nulla pharetra. Aliquet lectus proin nibh nisl condimentum id venenatis a. Feugiat sed lectus vestibulum mattis ullamcorper velit. Aliquet nec ullamcorper sit amet. Sit amet tellus cras adipiscing. Condimentum id venenatis a condimentum vitae. Semper eget duis at tellus. Ut faucibus pulvinar elementum integer enim.</p>
-    <p>Et malesuada fames ac turpis. Integer vitae justo eget magna fermentum iaculis eu non diam. Aliquet risus feugiat in ante metus dictum at. Consectetur purus ut faucibus pulvinar.</p>
+
+<div class="grid grid-cols-2" style="grid-auto-rows: 30fr;">
+  <div class="card" id="map" style='height: 300px'  >
   </div>
   <div class="card" style="padding: 0;">
     ${Inputs.table(hubblo)}
@@ -23,25 +39,16 @@ toc: false
 
 
 
-
 ```js
 var db = DuckDBClient.of()
 ```
 
 
-
-
-
 ```js
-const map = L.map("map")
-  .setView([51.505, -0.09], 13);
 
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png")
-  .addTo(map);
-
-
-
-
+  const map = L.map("map").setView([43.596, 1.4419], 10);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: '© OpenStreetMap' }).addTo(map);
+ 
 ```
 
 
@@ -57,9 +64,26 @@ var y = 6278679.902778912
 var rayon=1000 
 ```
 
-```js
-Inputs.table(hubblo)
-```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```js
 var hubblo = db.sql`select sum(Ind) as Ind,
