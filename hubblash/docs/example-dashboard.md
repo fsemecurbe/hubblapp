@@ -28,10 +28,13 @@ toc: false
 
 
   ```js
-    const rayon = view(Inputs.range([200, 1000], {step: 100}));
+    //const rayon = view(Inputs.range([200, 1000], {step: 100}));
+const rayon_input = Inputs.range([200, 1000], {step: 100});
+const rayon = Generators.input(rayon_input); 
   ```
 ${rayon}
 <div class="grid grid-cols-2">
+  <div>${rayon_input} </div>
   <div class="card" id="map">
   </div> 
   <div class="card">
