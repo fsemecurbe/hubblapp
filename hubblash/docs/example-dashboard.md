@@ -9,11 +9,11 @@ toc: false
 
 <div class="grid grid-cols-4">
   <div class="card">
-    <h2>Ménages</h2>
+    <h2>👪 Ménages</h2>
     <span class="big">${hubblo[0].Men}</span>
   </div>
   <div class="card">
-    <h2>Individus</h2>
+    <h2>🧑 Individus</h2>
     <span class="big">${hubblo[0].Ind}</span>
   </div>
   <div class="card">
@@ -32,10 +32,11 @@ toc: false
 const rayon_input = Inputs.range([200, 1000], {step: 100});
 const rayon = Generators.input(rayon_input); 
   ```
-${rayon}
+
 <div class="grid grid-cols-2">
+  <div class="card" >
   <div>${rayon_input} </div>
-  <div class="card" id="map">
+  <div id="map" style="height: 300px"></div>
   </div> 
   <div class="card">
     ${toto}
@@ -46,11 +47,11 @@ ${rayon}
 
 
  ```js
-const donnes_graph = [{'var':'Part des ménages de une personne', 'ratio':hubblo[0].Men_1ind/hubblo[0].Men*100},
-                    	{'var':'Part des familles nombreuses', 'ratio':hubblo[0].Men_5ind	/hubblo[0].Men*100},
-                      {'var':'Part des familles monoparentales', 'ratio':hubblo[0].Men_fmp	/hubblo[0].Men*100},
-                      {'var':'Part des ménages en maison', 'ratio':hubblo[0].Men_mais	/hubblo[0].Men*100},
-                      {'var':'Part des ménages propriétaires', 'ratio':hubblo[0].Men_prop	/hubblo[0].Men*100}]
+const donnes_graph = [{'var':'ménages de une personne', 'ratio':hubblo[0].Men_1ind/hubblo[0].Men*100},
+                    	{'var':'familles nombreuses', 'ratio':hubblo[0].Men_5ind	/hubblo[0].Men*100},
+                      {'var':'familles monoparentales', 'ratio':hubblo[0].Men_fmp	/hubblo[0].Men*100},
+                      {'var':'ménages en maison', 'ratio':hubblo[0].Men_mais	/hubblo[0].Men*100},
+                      {'var':'ménages propriétaires', 'ratio':hubblo[0].Men_prop	/hubblo[0].Men*100}]
 ```
 
 
