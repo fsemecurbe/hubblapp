@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Mon Hubblo</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight,alt,wide.css">
+<link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight,alt,wide.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin>
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/duckdb.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.28.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/apache-arrow@13.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/flatbuffers@23.5.26/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/htl@0.3.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/isoformat@0.2.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/mgrs@1.0.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.29.1/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/proj4@2.10.0/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/tslib@2.6.2/+esm">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/wkt-parser@1.3.3/+esm">
+<script type="module">
+
+import {define} from "./_observablehq/client.js";
+
+define({id: "5fae7931", inline: true, inputs: ["hubblo","display"], body: async (hubblo,display) => {
+display(await(
+hubblo[0].Men
+))
+}});
+
+define({id: "22f94f03", inline: true, inputs: ["hubblo","display"], body: async (hubblo,display) => {
+display(await(
+hubblo[0].Ind
+))
+}});
+
+define({id: "675f39de", inline: true, inputs: ["hubblo","display"], body: async (hubblo,display) => {
+display(await(
+Math.round(hubblo[0].Ind/hubblo[0].Men * 100) / 100
+))
+}});
+
+define({id: "f775d846", inline: true, inputs: ["hubblo","display"], body: async (hubblo,display) => {
+display(await(
+Math.round(hubblo[0].Men_pauv/hubblo[0].Men * 100) 
+))
+}});
+
+define({id: "003bb4ae", inputs: ["Inputs","Generators"], outputs: ["rayon_input","rayon"], body: (Inputs,Generators) => {
+const rayon_input = Inputs.range([200, 1000], {step: 100});
+const rayon = Generators.input(rayon_input); 
+return {rayon_input,rayon};
+}});
+
+define({id: "5cc75eaf", inline: true, inputs: ["rayon_input","display"], body: async (rayon_input,display) => {
+display(await(
+rayon_input
+))
+}});
+
+define({id: "1c889e5d", inputs: ["hubblo","Plotly"], outputs: ["data"], body: (hubblo,Plotly) => {
+var data = [
+  {
+    x: ['une personne', 'nombreuses', 'monoparentales', 'en maison', 'propriétaires'],
+    y: [hubblo[0].Men_1ind / hubblo[0].Men*100, 
+        hubblo[0].Men_5ind / hubblo[0].Men*100,
+        hubblo[0].Men_fmp	/ hubblo[0].Men*100,
+        hubblo[0].Men_mais / hubblo[0].Men*100,
+        hubblo[0].Men_prop	/hubblo[0].Men*100
+        ],
+    type: 'bar'
+  }
+];
+
+Plotly.newPlot('barhousehold', data);
+return {data};
+}});
+
+define({id: "3291fde6", inputs: ["L"], outputs: ["map"], body: (L) => {
+const map = L.map("map").setView([43.596, 1.4419], 10);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: '© OpenStreetMap' }).addTo(map);
+return {map};
+}});
+
+define({id: "d9838fe3", inputs: ["DuckDBClient","FileAttachment"], outputs: ["db"], files: [{"name":"./data/Filosofi2017_carreaux_200m_met_Men.parquet","mimeType":null,"path":"./_file/data/Filosofi2017_carreaux_200m_met_Men.parquet"}], body: (DuckDBClient,FileAttachment) => {
+const db = DuckDBClient.of({carreaux: FileAttachment("data/Filosofi2017_carreaux_200m_met_Men.parquet")});
+return {db};
+}});
+
+define({id: "74998918", inputs: ["Mutable"], outputs: ["coordonnees","increment"], body: (Mutable) => {
+const coordonnees = Mutable([1.4419,43.596]);
+const increment = (store) => coordonnees.value = store;
+return {coordonnees,increment};
+}});
+
+define({id: "84195e64", inputs: ["increment","circle","map"], outputs: ["onMapClick"], body: (increment,circle,map) => {
+  function onMapClick(e) {
+    console.log('test',e.latlng)    
+    
+    
+    increment([e.latlng.lng, e.latlng.lat])
+    
+    circle.remove()
+    
+    
+    }
+  map.on('click', onMapClick);
+return {onMapClick};
+}});
+
+define({id: "cea24ff2", inputs: ["L","coordonnees","rayon","map"], outputs: ["circle"], body: (L,coordonnees,rayon,map) => {
+var circle = L.circle([coordonnees[1],coordonnees[0]], {
+      color: 'red',
+          fillColor: '#f03',
+              fillOpacity: 0.5,
+                  radius: rayon
+                  }).addTo(map);
+return {circle};
+}});
+
+define({id: "fc0f1728", outputs: ["L","proj4","Plotly"], body: async () => {
+const [L, {default: proj4}, {default: Plotly}] = await Promise.all([import("https://cdn.jsdelivr.net/npm/leaflet@1.9.4/+esm"), import("https://cdn.jsdelivr.net/npm/proj4@2.10.0/+esm"), import("https://cdn.jsdelivr.net/npm/plotly.js-dist@2.29.1/+esm")]);
+
+return {L,proj4,Plotly};
+}});
+
+define({id: "6e759446", inputs: ["proj4","coordonnees"], outputs: ["coordinates3035"], body: (proj4,coordonnees) => {
+var coordinates3035 = proj4('+proj=longlat +datum=WGS84 +no_defs +type=crs',
+                        '+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',coordonnees);
+return {coordinates3035};
+}});
+
+define({id: "c8a00ed1", inputs: ["db","coordinates3035","rayon"], outputs: ["hubblo"], body: (db,coordinates3035,rayon) => {
+var hubblo = db.sql`select 
+        sum(Men_1ind) as Men_1ind, 
+        sum(Men_5ind) as Men_5ind, 
+        sum(Men_prop) as Men_prop, 
+        sum(Men_fmp) as Men_fmp,
+        sum(Men_surf) as Men_surf, 
+        sum(Men_coll) as Men_coll, 
+        sum(Men_mais) as Men_mais, 
+        sum(Men_pauv) as Men_pauv,
+        sum(Men) as Men 
+from 
+carreaux
+where ((x*100+3210500)>${coordinates3035[0]}-${rayon})
+and ((x*100+3210500)<${coordinates3035[0]}+${rayon})
+and ((y*100+2029900)>(${coordinates3035[1]}-${rayon})) 
+and ((y*100+2029900)<${coordinates3035[1]}+${rayon});`
+return {hubblo};
+}});
+
+</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h3 id="mon-hubblo" tabindex="-1"><a class="observablehq-header-anchor" href="#mon-hubblo">Mon Hubblo</a></h3>
+<div class="grid grid-cols-4">
+  <div class="card">
+    <h2>👪 Ménages</h2>
+    <span class="big"><span id="cell-5fae7931" class="observablehq--loading"></span></span>
+  </div>
+  <div class="card">
+    <h2>🧑 Individus</h2>
+    <span class="big"><span id="cell-22f94f03" class="observablehq--loading"></span></span>
+  </div>
+  <div class="card">
+    <h2>Taille des Ménages</h2>
+    <span class="big"><span id="cell-675f39de" class="observablehq--loading"></span></span>
+  </div>
+  <div class="card">
+    <h2>% des Ménages pauvres</h2>
+    <span class="big"><span id="cell-f775d846" class="observablehq--loading"></span></span>
+  </div>
+</div>
+<div id="cell-003bb4ae" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-2">
+  <div class="card">
+  <div><span id="cell-5cc75eaf" class="observablehq--loading"></span> </div>
+  <div id="map" style="height: 300px"></div>
+  </div> 
+  <div class="card" id="barhousehold">
+</div></div><span>  
+
+</span><div id="cell-1c889e5d" class="observablehq observablehq--block"></div>
+<div id="cell-3291fde6" class="observablehq observablehq--block"></div>
+<div id="cell-d9838fe3" class="observablehq observablehq--block"></div>
+<div id="cell-74998918" class="observablehq observablehq--block"></div>
+<div id="cell-84195e64" class="observablehq observablehq--block"></div>
+<div id="cell-cea24ff2" class="observablehq observablehq--block"></div>
+<div id="cell-fc0f1728" class="observablehq observablehq--block"></div>
+<div id="cell-6e759446" class="observablehq observablehq--block"></div>
+<div id="cell-c8a00ed1" class="observablehq observablehq--block"></div>
+</main>
+<footer id="observablehq-footer">
+<div>Built with <a href="https://observablehq.com/" target="_blank">Observable</a> on <a title="2024-02-27T10:27:13">Feb 27, 2024</a>.</div>
+</footer>
+</div>
