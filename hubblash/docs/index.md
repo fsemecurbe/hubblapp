@@ -1,110 +1,127 @@
 ---
+theme: dashboard
+title: Mon Hubblo
 toc: false
 ---
 
-<style>
- 
-.hero {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: var(--sans-serif);
-  margin: 4rem 0 8rem;
-  text-wrap: balance;
-  text-align: center;
-}
+# Mon Hubblo
 
-.hero h1 {
-  margin: 2rem 0;
-  max-width: none;
-  font-size: 14vw;
-  font-weight: 900;
-  line-height: 1;
-  background: linear-gradient(30deg, var(--theme-foreground-focus), currentColor);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero h2 {
-  margin: 0;
-  max-width: 34em;
-  font-size: 20px;
-  font-style: initial;
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--theme-foreground-muted);
-}
-
-@media (min-width: 640px) {
-  .hero h1 {
-    font-size: 90px;
-  }
-}
-
-</style>
-
-<div class="hero">
-  <h1>Hubblo</h1>
-  <h2>Welcome to your new project! Edit&nbsp;<code style="font-size: 90%;">docs/index.md</code> to change this page.</h2>
-  <a href="https://observablehq.com/framework/getting-started" target="_blank">Get started<span style="display: inline-block; margin-left: 0.25rem;">↗︎</span></a>
-</div>
-
-<div class="grid grid-cols-2" style="grid-auto-rows: 504px;">
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "Your awesomeness over time 🚀",
-      subtitle: "Up and to the right!",
-      width,
-      y: {grid: true, label: "Awesomeness"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(aapl, {x: "Date", y: "Close", tip: true})
-      ]
-    }))
-  }</div>
-  <div class="card">${
-    resize((width) => Plot.plot({
-      title: "How big are penguins, anyway? 🐧",
-      width,
-      grid: true,
-      x: {label: "Body mass (g)"},
-      y: {label: "Flipper length (mm)"},
-      color: {legend: true},
-      marks: [
-        Plot.linearRegressionY(penguins, {x: "body_mass_g", y: "flipper_length_mm", stroke: "species"}),
-        Plot.dot(penguins, {x: "body_mass_g", y: "flipper_length_mm", stroke: "species", tip: true})
-      ]
-    }))
-  }</div>
-</div>
-
----
-
-## Next steps
-
-Here are some ideas of things you could try…
 
 <div class="grid grid-cols-4">
   <div class="card">
-    Chart your own data using <a href="https://observablehq.com/framework/lib/plot"><code>Plot</code></a> and <a href="https://observablehq.com/framework/javascript/files"><code>FileAttachment</code></a>. Make it responsive using <a href="https://observablehq.com/framework/javascript/display#responsive-display"><code>resize</code></a>.
+    <h2>👪 Ménages</h2>
+    <span class="big">${hubblo[0].Men}</span>
   </div>
   <div class="card">
-    Create a <a href="https://observablehq.com/framework/routing">new page</a> by adding a Markdown file (<code>whatever.md</code>) to the <code>docs</code> folder.
+    <h2>🧑 Individus</h2>
+    <span class="big">${hubblo[0].Ind}</span>
   </div>
   <div class="card">
-    Add a drop-down menu using <a href="https://observablehq.com/framework/javascript/inputs"><code>Inputs.select</code></a> and use it to filter the data shown in a chart.
+    <h2>Taille des Ménages</h2>
+    <span class="big">${Math.round(hubblo[0].Ind/hubblo[0].Men * 100) / 100}</span>
   </div>
   <div class="card">
-    Write a <a href="https://observablehq.com/framework/loaders">data loader</a> that queries a local database or API, generating a data snapshot on build.
-  </div>
-  <div class="card">
-    Import a <a href="https://observablehq.com/framework/javascript/imports">recommended library</a> from npm, such as <a href="https://observablehq.com/framework/lib/leaflet">Leaflet</a>, <a href="https://observablehq.com/framework/lib/dot">GraphViz</a>, <a href="https://observablehq.com/framework/lib/tex">TeX</a>, or <a href="https://observablehq.com/framework/lib/duckdb">DuckDB</a>.
-  </div>
-  <div class="card">
-    Ask for help, or share your work or ideas, on the <a href="https://talk.observablehq.com/">Observable forum</a>.
-  </div>
-  <div class="card">
-    Visit <a href="https://github.com/observablehq/framework">Framework on GitHub</a> and give us a star. Or file an issue if you’ve found a bug!
+    <h2>% des Ménages pauvres</h2>
+    <span class="big">${Math.round(hubblo[0].Men_pauv/hubblo[0].Men * 100) }</span>
   </div>
 </div>
+
+
+  ```js
+    //const rayon = view(Inputs.range([200, 1000], {step: 100}));
+const rayon_input = Inputs.range([200, 1000], {step: 100});
+const rayon = Generators.input(rayon_input); 
+  ```
+
+<div class="grid grid-cols-2">
+  <div class="card" >
+  <div>${rayon_input} </div>
+  <div id="map" style="height: 300px"></div>
+  </div> 
+  <div class="card">
+    ${toto}
+  </div>
+</div>
+
+ ```js
+const donnes_graph = [{'var':' une personne', 'ratio':hubblo[0].Men_1ind/hubblo[0].Men*100},
+                    	{'var':'nombreuses', 'ratio':hubblo[0].Men_5ind	/hubblo[0].Men*100},
+                      {'var':'monoparentales', 'ratio':hubblo[0].Men_fmp	/hubblo[0].Men*100},
+                      {'var':'en maison', 'ratio':hubblo[0].Men_mais	/hubblo[0].Men*100},
+                      {'var':'propriétaires', 'ratio':hubblo[0].Men_prop	/hubblo[0].Men*100}]
+```
+
+
+ ```js
+const toto =  Plot.barX(donnes_graph, {y: "var", x: "ratio"}).plot();
+ ```
+
+```js
+const map = L.map("map").setView([43.596, 1.4419], 10);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: '© OpenStreetMap' }).addTo(map);
+```
+
+```js
+const db = DuckDBClient.of({carreaux: FileAttachment("data/Filosofi2017_carreaux_200m_met_Men.parquet")});
+```
+
+```js
+const coordonnees = Mutable([1.4419,43.596]);
+const increment = (store) => coordonnees.value = store;
+```
+
+
+```js
+  function onMapClick(e) {
+    console.log('test',e.latlng)    
+    
+    
+    increment([e.latlng.lng, e.latlng.lat])
+    
+    circle.remove()
+    
+    
+    }
+  map.on('click', onMapClick);
+```
+
+```js
+var circle = L.circle([coordonnees[1],coordonnees[0]], {
+      color: 'red',
+          fillColor: '#f03',
+              fillOpacity: 0.5,
+                  radius: rayon
+                  }).addTo(map);
+```
+
+
+```js
+import * as L from "npm:leaflet";
+import proj4 from "npm:proj4";
+```
+
+
+```js
+var coordinates3035 = proj4('+proj=longlat +datum=WGS84 +no_defs +type=crs',
+                        '+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',coordonnees);
+```
+
+```js
+var hubblo = db.sql`select 
+        sum(Men_1ind) as Men_1ind, 
+        sum(Men_5ind) as Men_5ind, 
+        sum(Men_prop) as Men_prop, 
+        sum(Men_fmp) as Men_fmp,
+        sum(Men_surf) as Men_surf, 
+        sum(Men_coll) as Men_coll, 
+        sum(Men_mais) as Men_mais, 
+        sum(Men_pauv) as Men_pauv,
+        sum(Men) as Men 
+from 
+carreaux
+where ((x*100+3210500)>${coordinates3035[0]}-${rayon})
+and ((x*100+3210500)<${coordinates3035[0]}+${rayon})
+and ((y*100+2029900)>(${coordinates3035[1]}-${rayon})) 
+and ((y*100+2029900)<${coordinates3035[1]}+${rayon});`
+```
+
