@@ -4,7 +4,7 @@ title: Mon Hubblo
 toc: false
 ---
 
-# Mon Hubblo
+### Mon Hubblo
 
 
 <div class="grid grid-cols-4">
@@ -27,34 +27,40 @@ toc: false
 </div>
 
 
-  ```js
-    //const rayon = view(Inputs.range([200, 1000], {step: 100}));
+```js
 const rayon_input = Inputs.range([200, 1000], {step: 100});
 const rayon = Generators.input(rayon_input); 
-  ```
+```
 
 <div class="grid grid-cols-2">
   <div class="card" >
   <div>${rayon_input} </div>
   <div id="map" style="height: 300px"></div>
   </div> 
-  <div class="card">
-    ${toto}
+  <div class="card" id='barhousehold'>
+    
   </div>
 </div>
 
- ```js
-const donnes_graph = [{'var':' une personne', 'ratio':hubblo[0].Men_1ind/hubblo[0].Men*100},
-                    	{'var':'nombreuses', 'ratio':hubblo[0].Men_5ind	/hubblo[0].Men*100},
-                      {'var':'monoparentales', 'ratio':hubblo[0].Men_fmp	/hubblo[0].Men*100},
-                      {'var':'en maison', 'ratio':hubblo[0].Men_mais	/hubblo[0].Men*100},
-                      {'var':'propriétaires', 'ratio':hubblo[0].Men_prop	/hubblo[0].Men*100}]
+
+
+```js
+var data = [
+  {
+    x: ['une personne', 'nombreuses', 'monoparentales', 'en maison', 'propriétaires'],
+    y: [hubblo[0].Men_1ind / hubblo[0].Men*100, 
+        hubblo[0].Men_5ind / hubblo[0].Men*100,
+        hubblo[0].Men_fmp	/ hubblo[0].Men*100,
+        hubblo[0].Men_mais / hubblo[0].Men*100,
+        hubblo[0].Men_prop	/hubblo[0].Men*100
+        ],
+    type: 'bar'
+  }
+];
+
+Plotly.newPlot('barhousehold', data);
 ```
 
-
- ```js
-const toto =  Plot.barX(donnes_graph, {y: "var", x: "ratio"}).plot();
- ```
 
 ```js
 const map = L.map("map").setView([43.596, 1.4419], 10);
@@ -98,6 +104,7 @@ var circle = L.circle([coordonnees[1],coordonnees[0]], {
 ```js
 import * as L from "npm:leaflet";
 import proj4 from "npm:proj4";
+import Plotly from 'npm:plotly.js-dist';
 ```
 
 
