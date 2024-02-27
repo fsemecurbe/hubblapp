@@ -1,5 +1,7 @@
 # hubblapp
 
+https://www.npmjs.com/package/leaflet.locatecontrol
+
 Premier test d'une api hubblo
 
 Pour la lancer
